@@ -1,0 +1,29 @@
+#!/usr/local/bin/perl
+system "rm msg pq.csv";
+system "/home/ungsun_p/oper/pq/DLquot3>/dev/null";
+open(MYFILE, "pq.csv")||die("unable to open file.\n");
+open (MSG,">msg");
+@a=<MYFILE>;
+@b=@a[1..@a-2];
+
+for ($i ; $i < @b ; $i++)
+{
+chop($b[$i]);
+chop($b[$i]);
+
+$b[$i] =~ s/PM//eg;
+$b[$i] =~ s/\"//eg;
+$b[$i]=~tr/A-Z/a-z/;   #lowercase it
+
+@c=split(/,/,$b[$i]);
+open (A, ">>/home/ungsun_p/oper/pq/data/@c[0]");
+print A ("@c[1] @c[4] at @c[2] @c[3] vol @c[8] hi @c[6] lo @c[7] open @c[5]\n");
+print MSG ("@c[0] @c[1] @c[4] @c[3]\n");
+close(A);
+}
+
+close(MYFILE);
+close(MSG);
+
+system "cat msg |mailx -s ClosingPrices peter_ungsunan\@ins.com";
+

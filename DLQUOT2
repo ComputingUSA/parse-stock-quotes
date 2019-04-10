@@ -1,0 +1,8 @@
+#!/usr/local/bin/expect -f
+spawn telnet
+send "open quote.yahoo.com 80\r"
+expect "Escape character is '^]'.\r"
+send "GET /download/quotes.csv?symbols=^dji+^ixic+cpq+dell+ibm+msft+intc+csco+wdc+gtw+glm+cpq+pair+sunw+apm+seg+glm+rdc&format=sl1d1t1c1ohgv&ext=.csv\r"
+log_file -a pq.csv
+interact
+
